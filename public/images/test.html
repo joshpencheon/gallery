@@ -1,0 +1,472 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    
+    <title>Thumbnail Test</title>
+    
+    <script type="text/javascript" charset="utf-8" src="../javascripts/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../javascripts/jquery-ui.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../javascripts/jquery.enumerable.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../javascripts/carousel.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function(){
+	  				
+	  		$('.photo').fadeTo(0, '0.5');
+		    $('li.sheet:first').find('.photo').add('.arrow').fadeTo(0, '0.001');
+				$('#top').show('slide', {direction: 'up'}, 400);
+	
+				// Load thumbnails here. Timeout demos.
+				
+				Carousel.init({
+          element: '#slider',
+          leftControl: $('#top').find('.arrow.left'),
+          rightControl: $('#top').find('.arrow.right'),
+          pointsContainer: $('#points')
+        });
+        
+        $('.point').fadeTo(0, '0');
+				
+				setTimeout(function(){
+          var photos = $('li.sheet:first').find('.photo');
+		    	$('.arrow.left').add(photos.add('.arrow.right')).each(function(index, photo) {
+	        	setTimeout(function() {
+							$(photo).fadeTo(0,'1').show('drop', {direction: 'up'},400)
+						}, index*100);
+	        });
+	        
+	        msDelay = 100 * (photos.length + 2) / Carousel.items.length;
+	        $('.point').each(function(index, point) {
+	          setTimeout(function() { 
+              $(point).fadeTo(msDelay, '1')
+	          }, index * msDelay);
+	        });
+				}, 1000);
+				
+				$('img.point').live("click", function() {
+				  index = parseInt($(this).attr('id'));
+				  Carousel.navigate.to(index);
+				})
+				
+				$('li.photo').click(function() {
+					$('li.photo').not(this).removeClass('active')
+					$(this).toggleClass('active')
+					
+					if($(this).hasClass('active')) {
+						// Show the main image
+					} else {
+						// Reset the main image
+					};
+				});
+      
+      });
+    </script>
+    
+    <style type="text/css" media="screen">
+      html, body {
+        padding: 0;
+        margin: 0;
+      }
+  
+      ul, li, div {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      div#top {
+        background: #333;
+        border-bottom: 7px solid #CCC;
+      }
+      
+      div.arrow {
+        background: url(carousel_arrows.png) no-repeat;
+        width: 36px;
+        height: 36px;
+        margin: 55px 20px 0;
+        float: left;
+      }
+
+      div.arrow:hover {
+        background-position: 0px -36px;
+        cursor: hand;
+      }
+      
+      div.arrow.right {
+        background-position: -36px 0;
+      }
+      
+      div.arrow.right:hover {
+        background-position: -36px -36px;
+        cursor: hand;
+      }
+      
+      div#carousel {
+        float:left;
+        overflow: hidden;
+        width: 842px;
+        height: 156px;
+        position: relative;
+      }
+      
+      
+      ul#slider {
+        height: 156px;
+        width: 3368;
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+        overflow: hidden;
+      }
+      
+      li.sheet {
+        width: 842px;
+        position: relative;
+      }
+      
+      li.sheet ul {
+
+      }
+  
+      li.sheet, li.photo, div.thumbnail {
+        float: left;
+      }
+  
+      li.photo p {
+        text-align: center;
+        color: #777;
+      }
+  
+      div.thumbnail.landscape {
+        background: url(shadow_horizontal.png) no-repeat 50% 50%;
+        padding: 25px 7px;
+        height: 102px;
+      }
+  
+      div.thumbnail.landscape div {
+        background: url(thumbnail_border_horizontal.png) no-repeat -132px -4px;
+        padding: 8px;
+        width: 112px;
+        height: 84px;
+      }
+  
+      li.photo:hover div.thumbnail.landscape div {
+        background-position: -132px -105px;
+      }
+  
+      li.photo.active div.thumbnail.landscape div {
+        background-position: -4px -4px;
+      }
+  
+      li.photo.active:hover div.thumbnail.landscape div {
+        background-position: -4px -105px;
+      }
+  
+      li.photo div.thumbnail.portrait {
+        background: url(shadow_vertical.png) no-repeat 50% 50%;
+        padding: 14px 18px;
+        width: 102px;
+      }
+  
+      li.photo div.thumbnail.portrait div {
+        background: url(thumbnail_border_vertical.png) no-repeat -103px -4px;
+        padding: 8px;
+        width: 84px;
+        height: 112px;
+      }
+  
+      li.photo:hover div.thumbnail.portrait div {
+        background-position: -103px -132px;
+      }
+  
+      li.photo.active div.thumbnail.portrait div {
+        background-position: -4px -4px;
+      }
+  
+      li.photo.active:hover div.thumbnail.portrait div {
+        background-position: -4px -132px;
+      }
+  
+      li.photo div.thumbnail.portrait img {
+        position: relative;
+        top: -112px;
+      }
+  
+      li.photo div.thumbnail.landscape img {
+        position: relative;
+        top: -84px;
+      }
+  
+      li.photo div.thumbnail img.pane {
+        top: 0px;
+        z-index: 2;
+      }
+      
+      div#points {
+        clear: both;
+        text-align: center;
+        padding-bottom: 10px;
+      }
+      
+      img.point {
+        cursor: pointer;
+        margin: 0 1px;
+      }
+    </style>
+  </head>
+  
+  <body style="background-color:#666">
+    <div id="top">
+      <div class="arrow left"></div>  
+      <div id="carousel">
+        <ul id="slider">
+    			<li class="sheet">
+    				<ul>
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="leaves_horizontal.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="desk.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="bubbles.png"/>
+    		          </div> 
+    		        </div>
+    		      </li>
+
+    			    <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="leaves_vertical.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <div style="clear:both;"></div>
+    		    </ul>
+    			</li>
+
+    			<li class="sheet">
+    				<ul>
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="leaves_horizontal.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="desk.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="bubbles.png"/>
+    		          </div> 
+    		        </div>
+    		      </li>
+
+    			    <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="leaves_vertical.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <div style="clear:both;"></div>
+    		    </ul>
+    			</li>
+
+    			<li class="sheet">
+    				<ul>
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="leaves_horizontal.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="desk.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="bubbles.png"/>
+    		          </div> 
+    		        </div>
+    		      </li>
+
+    			    <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="leaves_vertical.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <div style="clear:both;"></div>
+    		    </ul>
+    			</li>
+
+    			<li class="sheet">
+    				<ul>
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="leaves_horizontal.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="desk.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="bubbles.png"/>
+    		          </div> 
+    		        </div>
+    		      </li>
+
+    			    <li class="photo">
+    		        <div class="thumbnail landscape">
+    		          <div>
+    		            <img class="pane" src="pane_horizontal.png"/>
+    		            <img src="hex.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <li class="photo">
+    		        <div class="thumbnail portrait">
+    		          <div>
+    		            <img class="pane" src="pane_vertical.png"/>
+    		            <img src="leaves_vertical.png"/>
+    		          </div>
+    		        </div>
+    		      </li>
+
+    		      <div style="clear:both;"></div>
+    		    </ul>
+    			</li> 	
+    		</ul>      
+      </div>
+      <div class="arrow right"></div>
+      <div id="points">
+      </div>
+    </div>
+		
+		<div id="main">
+		</div>
+  </body>
+</html>
